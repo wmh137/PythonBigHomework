@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Form implementation generated from reading ui file 'E:\#2019-1-Spring\Python\Pythonbighomework\PythonBigHomework\gui.ui'
+# Form implementation generated from reading ui file 'gui.ui'
 #
 # Created by: PyQt5 UI code generator 5.11.3
 #
@@ -17,6 +17,7 @@ class Ui_Form(object):
         Form.setFont(font)
         self.groupBox = QtWidgets.QGroupBox(Form)
         self.groupBox.setGeometry(QtCore.QRect(70, 70, 980, 105))
+        self.groupBox.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.groupBox.setTitle("")
         self.groupBox.setObjectName("groupBox")
         self.pushButton = QtWidgets.QPushButton(self.groupBox)
@@ -25,6 +26,7 @@ class Ui_Form(object):
         font.setFamily("等线")
         font.setPointSize(13)
         self.pushButton.setFont(font)
+        self.pushButton.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.pushButton.setIconSize(QtCore.QSize(20, 20))
         self.pushButton.setObjectName("pushButton")
         self.lineEdit = QtWidgets.QLineEdit(self.groupBox)
@@ -69,6 +71,7 @@ class Ui_Form(object):
         font.setFamily("等线")
         font.setPointSize(10)
         self.comboBox.setFont(font)
+        self.comboBox.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         self.comboBox.setObjectName("comboBox")
         self.comboBox.addItem("")
         self.comboBox.addItem("")
@@ -86,9 +89,31 @@ class Ui_Form(object):
         self.line.setFrameShape(QtWidgets.QFrame.HLine)
         self.line.setFrameShadow(QtWidgets.QFrame.Sunken)
         self.line.setObjectName("line")
+        self.groupBox_2 = QtWidgets.QGroupBox(Form)
+        self.groupBox_2.setGeometry(QtCore.QRect(70, 245, 980, 280))
+        self.groupBox_2.setTitle("")
+        self.groupBox_2.setObjectName("groupBox_2")
+        self.horizontalSlider = QtWidgets.QSlider(self.groupBox_2)
+        self.horizontalSlider.setGeometry(QtCore.QRect(60, 210, 840, 35))
+        self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
+        self.horizontalSlider.setObjectName("horizontalSlider")
+        self.label_4 = QtWidgets.QLabel(self.groupBox_2)
+        self.label_4.setGeometry(QtCore.QRect(105, 70, 560, 70))
+        self.label_4.setText("")
+        self.label_4.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_4.setObjectName("label_4")
+        self.pushButton_2 = QtWidgets.QPushButton(self.groupBox_2)
+        self.pushButton_2.setGeometry(QtCore.QRect(770, 85, 105, 40))
+        font = QtGui.QFont()
+        font.setFamily("等线")
+        font.setPointSize(12)
+        self.pushButton_2.setFont(font)
+        self.pushButton_2.setObjectName("pushButton_2")
 
         self.retranslateUi(Form)
         self.pushButton.clicked.connect(Form.route)
+        self.lineEdit.textChanged.connect(Form.statusready)
+        self.lineEdit_2.textChanged.connect(Form.statusready)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
     def retranslateUi(self, Form):
@@ -102,4 +127,5 @@ class Ui_Form(object):
         self.comboBox.setItemText(2, _translate("Form", "公交"))
         self.comboBox.setItemText(3, _translate("Form", "骑行"))
         self.label_3.setText(_translate("Form", "Ready!"))
+        self.pushButton_2.setText(_translate("Form", "开始导航"))
 

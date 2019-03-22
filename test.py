@@ -17,11 +17,15 @@ class mysoft(QtWidgets.QMainWindow, Ui_Form):
         super(mysoft, self).__init__()
         self.setupUi(self)
 
+    def statusready(self):
+        self.label_3.setText('Ready!')
+
     def route(self):
         self.label_3.setText('Searching...')
         keywords1 = self.lineEdit.text()
         keywords2 = self.lineEdit_2.text()
-        if keywords1 != '' and keywords2 != '':
+        if keywords2 != '':
+            # default location1 will be set by IP in the future
             result1 = requests.get(url, {'key': mykey, 'keywords': keywords1})
             result2 = requests.get(url, {'key': mykey, 'keywords': keywords2})
             result1 = result1.json()
@@ -37,27 +41,37 @@ class mysoft(QtWidgets.QMainWindow, Ui_Form):
                     # 步行
                     routeresult = requests.get(url_0, parameters)
                     routeresult = routeresult.json()
+                    ins = routeresult['route']['paths'][0]['steps']
+                    ins = [ins[i]['instruction'] for i in range(len(ins))]
                 elif choice == 1:
                     # 驾车
                     parameters['originid'] = result1['pois'][0]['id']
                     parameters['destinationid'] = result2['pois'][0]['id']
                     routeresult = requests.get(url_1, parameters)
                     routeresult = routeresult.json()
+                    ins = routeresult['route']['paths'][0]['steps']
+                    ins = [ins[i]['instruction'] for i in range(len(ins))]
                 elif choice == 2:
                     # 公交
                     parameters['city'] = result1['pois'][0]['cityname']
                     parameters['cityd'] = result2['pois'][0]['cityname']
                     routeresult = requests.get(url_2, parameters)
                     routeresult = routeresult.json()
+                    ins = routeresult['route']['transits'][0]['segments']
+                    ins_departure = [ins[i]['bus']['busliness']['departure_stop']['name'] for i in range(len(ins))]
+                    ins_arrival = [ins[i]['bus']['busliness']['arrival_stop']['name'] for i in range(len(ins))]
+                    ins_stop = [ins[i]['bus']['busliness']['name'] for i in range(len(ins))]
                 else:
                     # 骑行
                     routeresult = requests.get(url_3, parameters)
                     routeresult = routeresult.json()
+                    ins = routeresult['data']['paths'][0]['steps']
+                    ins = [ins[i]['instruction'] for i in range(len(ins))]
                 self.label_3.setText('Finished!')
             else:
                 self.label_3.setText('Check the keywords!')
         else:
-            self.label_3.setText('Origin or destination is default!')
+            self.label_3.setText('Destination is default!')
 
 
 if __name__ == "__main__":
