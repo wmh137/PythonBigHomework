@@ -55,6 +55,7 @@ class Ui_Form(object):
 
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
+        self.pushButton.clicked.connect(Form.route)
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
