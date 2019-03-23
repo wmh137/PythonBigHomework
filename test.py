@@ -81,7 +81,7 @@ class mysoft(QtWidgets.QMainWindow, Ui_Form):
                     routeresult = requests.get(url_3, parameters)
                     routeresult = routeresult.json()
                     ins = routeresult['data']['paths'][0]['steps']
-                    ins = [ins[i]['instruction']+'\n' for i in range(len(ins))]
+                    ins = [ins[i]['instruction'] for i in range(len(ins))]
                     paths = ins
                 self.label_3.setText('Finished!')
                 self.pushButton_2.setEnabled(True)
