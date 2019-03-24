@@ -2,6 +2,7 @@ import sys
 import requests
 import datetime
 from reflist import ins2paths, wait
+import pyttsx3
 from PyQt5 import QtWidgets
 
 from gui import Ui_Form
@@ -14,6 +15,7 @@ url_1 = 'https://restapi.amap.com/v3/direction/driving?'
 url_2 = 'https://restapi.amap.com/v3/direction/transit/integrated?'
 url_3 = 'https://restapi.amap.com/v4/direction/bicycling?'
 
+engine = pyttsx3.init()
 
 
 
@@ -104,28 +106,42 @@ class mysoft(QtWidgets.QMainWindow, Ui_Form):
     def navig(self):
         self.label_4.setText(paths[0])
         self.pushButton_3.setEnabled(False)
-        self.pushButton_4.setEnabled(True)
         self.label_5.setText('1')
         self.label_6.setText('/')
         self.label_7.setText(str(len(paths)))
+        if engine.isBusy():
+            engine.stop()
+        engine.say(paths[0])
+        engine.runAndWait()
+        self.pushButton_4.setEnabled(True)
 
     def before(self):
         n = int(self.label_5.text()) - 1
         self.label_5.setText(str(n))
         self.label_4.setText(paths[n-1])
-        if n == 1:
-            self.pushButton_3.setEnabled(False)
-        if n+1 == len(paths):
-            self.pushButton_4.setEnabled(True)
+        if engine.isBusy():
+            engine.stop()
+        engine.say(paths[n-1])
+        self.pushButton_3.setEnabled(False)
+        self.pushButton_4.setEnabled(False)
+        engine.runAndWait()
+        self.pushButton_4.setEnabled(True)
+        if n != 1:
+            self.pushButton_3.setEnabled(True)
 
     def after(self):
         n = int(self.label_5.text())
         self.label_5.setText(str(n+1))
         self.label_4.setText(paths[n])
-        if n+1 == len(paths):
-            self.pushButton_4.setEnabled(False)
-        if n == 1:
-            self.pushButton_3.setEnabled(True)
+        if engine.isBusy():
+            engine.stop()
+        engine.say(paths[n])
+        self.pushButton_3.setEnabled(False)
+        self.pushButton_4.setEnabled(False)
+        engine.runAndWait()
+        self.pushButton_3.setEnabled(True)
+        if n+1 != len(paths):
+            self.pushButton_4.setEnabled(True)
 
 
 if __name__ == "__main__":
