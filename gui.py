@@ -156,6 +156,7 @@ class Ui_Form(object):
         self.label_7.setText("")
         self.label_7.setAlignment(QtCore.Qt.AlignCenter)
         self.label_7.setObjectName("label_7")
+        self.setFixedSize(self.width(), self.height())
 
         self.retranslateUi(Form)
         self.pushButton.clicked.connect(Form.route)

@@ -27,7 +27,7 @@ function global:deactivate ([switch]$NonDestructive) {
 
 deactivate -nondestructive
 
-$env:VIRTUAL_ENV="E:\#2019-1-Spring\Python\Pythonbighomework\PythonBigHomework\venv"
+$env:VIRTUAL_ENV="E:\GitHub\PythonBigHomework\venv"
 
 if (! $env:VIRTUAL_ENV_DISABLE_PROMPT) {
     # Set the prompt to include the env name

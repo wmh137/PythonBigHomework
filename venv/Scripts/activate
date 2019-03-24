@@ -37,7 +37,7 @@ deactivate () {
 # unset irrelevant variables
 deactivate nondestructive
 
-VIRTUAL_ENV="E:\#2019-1-Spring\Python\Pythonbighomework\PythonBigHomework\venv"
+VIRTUAL_ENV="E:\GitHub\PythonBigHomework\venv"
 export VIRTUAL_ENV
 
 _OLD_VIRTUAL_PATH="$PATH"

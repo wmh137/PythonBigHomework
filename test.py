@@ -1,13 +1,14 @@
 import sys
 import requests
 import datetime
-from routelist import ins2paths
+from reflist import ins2paths, wait
 from PyQt5 import QtWidgets
 
 from gui import Ui_Form
 
 mykey = '39925e5407cbb978492cf5a60911fd10'
 url = 'https://restapi.amap.com/v3/place/text?'
+url_ip = 'https://restapi.amap.com/v3/ip?parameters'
 url_0 = 'https://restapi.amap.com/v3/direction/walking?'
 url_1 = 'https://restapi.amap.com/v3/direction/driving?'
 url_2 = 'https://restapi.amap.com/v3/direction/transit/integrated?'
@@ -34,16 +35,21 @@ class mysoft(QtWidgets.QMainWindow, Ui_Form):
     def route(self):
         keywords1 = self.lineEdit.text()
         keywords2 = self.lineEdit_2.text()
-        self.label_3.setText('Searching...')
-        self.pushButton.setEnabled(False)
+        wait(self)
+        global paths
+        paths = []
         if keywords2 != '':
-            # default location1 will be set by IP in the future
-            result1 = requests.get(url, {'key': mykey, 'keywords': keywords1})
+            if keywords1 == '':
+                result1 = requests.get(url_ip, {'key': mykey})
+                result1 = result1.json()
+                result1 = requests.get(url, {'key': mykey, 'keywords': result1['city'], 'city': result1['city']})
+                result1 = result1.json()
+            else:
+                result1 = requests.get(url, {'key': mykey, 'keywords': keywords1})
+                result1 = result1.json()
             result2 = requests.get(url, {'key': mykey, 'keywords': keywords2})
-            result1 = result1.json()
             result2 = result2.json()
             if result1['count'] != '0' and result2['count'] != '0':
-                global paths
                 self.lineEdit.setText(result1['pois'][0]['name'])
                 self.lineEdit_2.setText(result2['pois'][0]['name'])
                 location1 = result1['pois'][0]['location']
@@ -54,18 +60,20 @@ class mysoft(QtWidgets.QMainWindow, Ui_Form):
                     # 步行
                     routeresult = requests.get(url_0, parameters)
                     routeresult = routeresult.json()
-                    ins = routeresult['route']['paths'][0]['steps']
-                    ins = [ins[i]['instruction'] for i in range(len(ins))]
-                    paths = ins
+                    if routeresult['status'] == '1':
+                        ins = routeresult['route']['paths'][0]['steps']
+                        paths = [ins[i]['instruction'] for i in range(len(ins))]
+                    self.label_3.setText('info: ' + routeresult['info'])
                 elif choice == 1:
                     # 驾车
                     parameters['originid'] = result1['pois'][0]['id']
                     parameters['destinationid'] = result2['pois'][0]['id']
                     routeresult = requests.get(url_1, parameters)
                     routeresult = routeresult.json()
-                    ins = routeresult['route']['paths'][0]['steps']
-                    ins = [ins[i]['instruction'] for i in range(len(ins))]
-                    paths = ins
+                    if routeresult['status'] == '1':
+                        ins = routeresult['route']['paths'][0]['steps']
+                        paths = [ins[i]['instruction'] for i in range(len(ins))]
+                    self.label_3.setText('info: ' + routeresult['info'])
                 elif choice == 2:
                     # 公交
                     parameters['city'] = result1['pois'][0]['cityname']
@@ -73,23 +81,25 @@ class mysoft(QtWidgets.QMainWindow, Ui_Form):
                     parameters['date'] = str(datetime.date.today())
                     routeresult = requests.get(url_2, parameters)
                     routeresult = routeresult.json()
-                    ins = routeresult['route']['transits'][0]['segments']
-                    paths = ins2paths(ins)
-
+                    if routeresult['status'] == '1':
+                        paths = ins2paths(routeresult['route']['transits'][0]['segments'])
+                    self.label_3.setText('info: ' + routeresult['info'])
                 else:
                     # 骑行
                     routeresult = requests.get(url_3, parameters)
                     routeresult = routeresult.json()
-                    ins = routeresult['data']['paths'][0]['steps']
-                    ins = [ins[i]['instruction'] for i in range(len(ins))]
-                    paths = ins
-                self.label_3.setText('Finished!')
-                self.pushButton_2.setEnabled(True)
+                    if not routeresult['errcode']:
+                        ins = routeresult['data']['paths'][0]['steps']
+                        paths = [ins[i]['instruction'] for i in range(len(ins))]
+                        self.label_3.setText('info: OK')
+                    else:
+                        self.label_3.setText('errdetail:' + routeresult['errdetail'])
             else:
                 self.label_3.setText('Check the keywords!')
         else:
             self.label_3.setText('Destination is default!')
-        self.pushButton.setEnabled(True)
+        if paths:
+            self.pushButton_2.setEnabled(True)
 
     def navig(self):
         self.label_4.setText(paths[0])
