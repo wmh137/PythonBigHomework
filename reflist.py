@@ -1,4 +1,4 @@
-def ins2paths(ins):
+def ins2paths(ins):  # 公交paths包括步行部分，非轨道公交部分，轨道交通（含地铁，铁路，高铁等）部分，本函数对其进行分离并存储
     paths = []
     for i in range(len(ins)):
         if ins[i]['walking']:
@@ -8,7 +8,3 @@ def ins2paths(ins):
         if ins[i]['railway']['spaces']:
             paths += ['乘坐 ' + ins[i]['railway']['name'] + ' 自 ' + ins[i]['railway']['departure_stop']['name'] + ' 至 ' + ins[i]['railway']['arrival_stop']['name']]
     return paths
-
-
-def wait(self):
-    self.label_3.setText('Searching...')

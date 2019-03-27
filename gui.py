@@ -7,6 +7,7 @@
 # WARNING! All changes made in this file will be lost!
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QIcon
 
 class Ui_Form(object):
     def setupUi(self, Form):
@@ -157,6 +158,7 @@ class Ui_Form(object):
         self.label_7.setAlignment(QtCore.Qt.AlignCenter)
         self.label_7.setObjectName("label_7")
         self.setFixedSize(self.width(), self.height())
+        self.setWindowIcon(QIcon('icon/icon.jpg'))
 
         self.retranslateUi(Form)
         self.pushButton.clicked.connect(Form.route)
@@ -170,7 +172,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        self.setWindowTitle('I will lead you')
         self.pushButton.setText(_translate("Form", "路径规划"))
         self.label.setText(_translate("Form", "出发点"))
         self.label_2.setText(_translate("Form", "目的地"))
