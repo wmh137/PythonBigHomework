@@ -35,8 +35,8 @@ class mysoft(QtWidgets.QMainWindow, Ui_Form):
         self.label_7.setText('')
 
     def route(self):  # 路线
-        keywords1 = self.lineEdit.text()  # 出发点关键字，多关键字请用“|”分割
-        keywords2 = self.lineEdit_2.text()  # 目的地关键字，多关键字请用“|”分割
+        keywords1 = self.lineEdit.text()  # 出发点关键字，多关键字请用“ ”分割
+        keywords2 = self.lineEdit_2.text()  # 目的地关键字，多关键字请用“ ”分割
         global paths  # 路径
         paths = []
         if keywords2 != '':  # 目的地缺省则提示
@@ -95,7 +95,7 @@ class mysoft(QtWidgets.QMainWindow, Ui_Form):
                 self.label_3.setText('Check the keywords!')
         else:
             self.label_3.setText('Destination is default!')
-        if paths:  #若paths不空则可以开始导航（考虑关键词搜索失败，导航规划失败等情况）
+        if paths:  # 若paths不空则可以开始导航（考虑关键词搜索失败，导航规划失败等情况）
             self.pushButton_2.setEnabled(True)
 
     def navig(self):  # 导航
